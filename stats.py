@@ -39,6 +39,7 @@ def parse(filename):
             if state == COULD_SEE_CHARACTER:
                 if is_character_name(cleaned):
                     current_character = cleaned[1:] if cleaned[0] == "@" else cleaned
+                    current_character = current_character.upper()
                     state = JUST_SAW_CHARACTER
             elif state == JUST_SAW_CHARACTER:
                 if is_dialogue_line(line):
