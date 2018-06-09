@@ -13,14 +13,17 @@ JUST_SAW_CHARACTER = 2
 IN_DIALOGUE = 3
 CANT_SEE_CHARACTER = 4
 
+
+DEBUG = os.getenv("DEBUG")
+
 def is_character_name(line):
     if line and line[0] == "@":
         return True
     # Once you strip whitespace, a character is:
     # 1 or more ALLCAPS words, optionally followed by
-    # a parenthetical that can have basically whateer in it.
-    # TODO support the parentheticals (\([\w\./-]+\))?
-    return re.search(r"^[A-Z]+( [A-Z]+)*$", line)
+    # a parenthetical that can have basically whatever in it.
+    # TODO support the parentheticals (\([\w\./-']+\))?
+    return re.search(r"^[A-Z\d]+( [A-Z\d]+)*$", line)
 
 def is_dialogue_line(line):
     return line.strip() or len(line) > 2
@@ -46,6 +49,8 @@ def parse(filename):
                     c = characters[current_character]
                     characters[current_character] = Character(c.lines + 1, c.words + count_words(cleaned))
                     state = IN_DIALOGUE
+                    if DEBUG:
+                        print "<<<START", current_character
                 elif not cleaned:
                     # The line is blank, so the next line could be a character name
                     state = COULD_SEE_CHARACTER
@@ -59,9 +64,13 @@ def parse(filename):
                 else:
                     assert not cleaned
                     state = COULD_SEE_CHARACTER
+                    if DEBUG:
+                        print ">>>END", current_character
             elif state == CANT_SEE_CHARACTER:
                 if not cleaned:
                     state = COULD_SEE_CHARACTER
+            if DEBUG:
+                print(cleaned)
     return characters
 
 
