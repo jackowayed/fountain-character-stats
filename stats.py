@@ -34,7 +34,7 @@ def count_words(line):
 
 def parse(filename):
     characters = collections.defaultdict(lambda: Character(0, 0))
-    state = IN_DIALOGUE
+    state = COULD_SEE_CHARACTER
     current_character = None
     with open(filename) as f:
         for line in f:
