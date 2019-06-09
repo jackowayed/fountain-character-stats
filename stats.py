@@ -15,6 +15,7 @@ CANT_SEE_CHARACTER = 4
 
 
 DEBUG = os.getenv("DEBUG")
+ORDER_OF_APPEARANCE = os.getenv("ORDER_OF_APPEARANCE")
 
 def is_character_name(line):
     if line and line[0] == "@":
@@ -36,6 +37,7 @@ def parse(filename):
     characters = collections.defaultdict(lambda: Character(0, 0))
     state = COULD_SEE_CHARACTER
     current_character = None
+    characters_in_order = []
     with open(filename) as f:
         for line in f:
             cleaned = line.strip()
@@ -44,6 +46,7 @@ def parse(filename):
                     current_character = cleaned[1:] if cleaned[0] == "@" else cleaned
                     current_character = current_character.upper()
                     state = JUST_SAW_CHARACTER
+                    characters_in_order.append(current_character)
             elif state == JUST_SAW_CHARACTER:
                 if is_dialogue_line(line):
                     c = characters[current_character]
@@ -71,10 +74,19 @@ def parse(filename):
                     state = COULD_SEE_CHARACTER
             if DEBUG:
                 print(cleaned)
+    if ORDER_OF_APPEARANCE:
+        return characters_in_order
     return characters
 
 
 if __name__ == '__main__':
+    if ORDER_OF_APPEARANCE:
+        s = set()
+        for c in parse(sys.argv[1]):
+            if c not in s:
+                s.add(c)
+                print c
+        exit()
     for charname, stats in sorted(parse(sys.argv[1]).iteritems(), key=lambda kv: kv[1].words, reverse=True):
         print "%s\t%s\t%s" % (charname, stats.words, stats.lines)
                     
