@@ -1,9 +1,9 @@
 Character stats (# lines & # words) for [Fountain](https://fountain.io/)
 screenplay files (very Markdown-like format).
 
-Run with ./stats.py filename.fountain
+Run with `./stats.py filename.fountain`
 
-TODO's:
+TODOs:
 
 * Support character annotations (parentheses after character name)
 * Support dual dialogue.
