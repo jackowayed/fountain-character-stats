@@ -1,4 +1,5 @@
-Character stats (# lines & # words) for Fountain screenplay files
+Character stats (# lines & # words) for [Fountain](https://fountain.io/)
+screenplay files (very Markdown-like format).
 
 Run with ./stats.py filename.fountain
 
