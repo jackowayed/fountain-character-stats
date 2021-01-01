@@ -32,6 +32,10 @@ def is_dialogue_line(line):
 def count_words(line):
     return len(line.split())
 
+def debug_print(*args):
+    if DEBUG:
+        print(*args)
+
 
 def parse(filename):
     characters = collections.defaultdict(lambda: Character(0, 0))
@@ -52,8 +56,7 @@ def parse(filename):
                     c = characters[current_character]
                     characters[current_character] = Character(c.lines + 1, c.words + count_words(cleaned))
                     state = IN_DIALOGUE
-                    if DEBUG:
-                        print("<<<START", current_character)
+                    debug_print("<<<START", current_character)
                 elif not cleaned:
                     # The line is blank, so the next line could be a character name
                     state = COULD_SEE_CHARACTER
@@ -67,13 +70,11 @@ def parse(filename):
                 else:
                     assert not cleaned
                     state = COULD_SEE_CHARACTER
-                    if DEBUG:
-                        print(">>>END", current_character)
+                    debug_print(">>>END", current_character)
             elif state == CANT_SEE_CHARACTER:
                 if not cleaned:
                     state = COULD_SEE_CHARACTER
-            if DEBUG:
-                print(cleaned)
+            debug_print(cleaned)
     if ORDER_OF_APPEARANCE:
         return characters_in_order
     return characters
