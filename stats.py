@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import collections
 import os
@@ -53,7 +53,7 @@ def parse(filename):
                     characters[current_character] = Character(c.lines + 1, c.words + count_words(cleaned))
                     state = IN_DIALOGUE
                     if DEBUG:
-                        print "<<<START", current_character
+                        print("<<<START", current_character)
                 elif not cleaned:
                     # The line is blank, so the next line could be a character name
                     state = COULD_SEE_CHARACTER
@@ -68,7 +68,7 @@ def parse(filename):
                     assert not cleaned
                     state = COULD_SEE_CHARACTER
                     if DEBUG:
-                        print ">>>END", current_character
+                        print(">>>END", current_character)
             elif state == CANT_SEE_CHARACTER:
                 if not cleaned:
                     state = COULD_SEE_CHARACTER
@@ -85,8 +85,8 @@ if __name__ == '__main__':
         for c in parse(sys.argv[1]):
             if c not in s:
                 s.add(c)
-                print c
+                print(c)
         exit()
-    for charname, stats in sorted(parse(sys.argv[1]).iteritems(), key=lambda kv: kv[1].words, reverse=True):
-        print "%s\t%s\t%s" % (charname, stats.words, stats.lines)
+    for charname, stats in sorted(iter(parse(sys.argv[1]).items()), key=lambda kv: kv[1].words, reverse=True):
+        print("%s\t%s\t%s" % (charname, stats.words, stats.lines))
                     
